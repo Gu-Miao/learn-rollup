@@ -3,6 +3,7 @@ export default {
   title: 'Rollup',
   cleanUrls: 'with-subfolders',
   ignoreDeadLinks: true,
+  lastUpdated: true,
   themeConfig: {
     siteTitle: 'Rollup',
     logo: '/logo.svg',
@@ -35,6 +36,11 @@ export default {
     footer: {
       message: 'MIT License.',
       copyright: 'Copyright © 2022-present Gu-Miao'
+    },
+    lastUpdatedText: '最近更新时间',
+    docFooter: {
+      prev: '上一页',
+      next: '下一页'
     }
   }
 }
