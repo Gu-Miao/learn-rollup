@@ -2,6 +2,7 @@ export default {
   lang: 'zh_CN',
   title: 'Rollup',
   cleanUrls: 'with-subfolders',
+  ignoreDeadLinks: true,
   themeConfig: {
     siteTitle: 'Rollup',
     logo: '/logo.svg',
