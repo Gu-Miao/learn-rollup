@@ -20,7 +20,7 @@ export default {
         text: '文档',
         items: [
           { text: '介绍', link: '/docs/introduction' },
-          { text: '命令行', link: '/docs/command-line-reference' },
+          { text: '命令行界面', link: '/docs/command-line-reference' },
           { text: 'JavaScript API', link: '/docs/javascript-api' },
           { text: 'ES Module 语法', link: '/docs/es-module-syntax' },
           { text: '教程', link: '/docs/tutorial' },
