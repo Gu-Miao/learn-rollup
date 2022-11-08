@@ -175,7 +175,7 @@ rollup --config my.config.js
 rollup --config
 ```
 
-You can also export a function that returns any of the above configuration formats. This function will be passed the current command line arguments so that you can dynamically adapt your configuration to respect e.g. [`--silent`](#--silent). You can even define your own command line options if you prefix them with `config`:
+您还可以导出一个默认的函数，此函数将接收当前的命令行选项作为参数，返回上述中的配置对象。通过这种方式，您可以动态调整配置。如果以 `config` 作为前缀，您甚至可以自定义命令行选项：
 
 ```javascript
 // rollup.config.js
@@ -190,16 +190,16 @@ export default commandLineArgs => {
 }
 ```
 
-If you now run `rollup --config --configDebug`, the debug configuration will be used.
+如果现在运行 `rollup-config-configDebug`，将使用调试配置。
 
-By default, command line arguments will always override the respective values exported from a config file. If you want to change this behaviour, you can make Rollup ignore command line arguments by deleting them from the `commandLineArgs` object:
+默认情况下，命令行参数将始终覆盖从配置文件导出的相应值。如果要更改此行为，可以从 `commandLineArgs` 对象中删除命令行参数，使 Rollup 忽略命令行参数：
 
 ```javascript
 // rollup.config.js
 export default commandLineArgs => {
   const inputBase = commandLineArgs.input || 'main.js';
 
-  // this will make Rollup ignore the CLI argument
+  // 这将会忽略命令行参数
   delete commandLineArgs.input;
   return {
     input: 'src/entries/' + inputBase,
@@ -210,7 +210,7 @@ export default commandLineArgs => {
 
 ### 配置选项智能补全
 
-Since Rollup ships with TypeScript typings, you can leverage your IDE's Intellisense with JSDoc type hints:
+Rollup 提供了 TypeScript 类型支持，您可以使用 JSDoc 帮助 IDE 识别您的配置对象类型：
 
 ```javascript
 // rollup.config.js
@@ -218,66 +218,66 @@ Since Rollup ships with TypeScript typings, you can leverage your IDE's Intellis
  * @type {import('rollup').RollupOptions}
  */
 const config = {
-  /* your config */
+  /* ... */
 }
 export default config
 ```
 
-Alternatively you can use the `defineConfig` helper, which should provide Intellisense without the need for JSDoc annotations:
+或者，您可以使用 `defineConfig` 辅助函数，它会提供相应的类型支持并且不需要 JSDoc 注释：
 
 ```javascript
 // rollup.config.js
 import { defineConfig } from 'rollup'
 
 export default defineConfig({
-  /* your config */
+  /* ... */
 })
 ```
 
-Besides `RollupOptions` and the `defineConfig` helper that encapsulates this type, the following types can prove useful as well:
+除了 `RollupOptions` 和 `defineConfig` 辅助函数外，您还可以使用下列类型：
 
-- `OutputOptions`: The `output` part of a config file
-- `Plugin`: A plugin object that provides a `name` and some hooks. All hooks are fully typed to aid in plugin development.
-- `PluginImpl`: A function that maps an options object to a plugin object. Most public Rollup plugins follow this pattern.
+- `OutputOptions`: `output` 部分的类型
+- `Plugin`：一个插件对象包括一个 `name` 属性和一些钩子函数。所有钩子函数都有完备的类型支持以方便插件开发。
+- `PluginImpl`：将配置对象映射到插件对象的函数。大多数公共 Rollup 插件都遵循这种模式。
 
-You can also directly write your config in TypeScript via the [`--configPlugin`](#--configplugin-plugin) option. With TypeScript, you can import the `RollupOptions` type directly:
+您还可以通过 [`--configPlugin`](#configplugin-plugin) 选项直接使用 TypeScript 编写配置文件。使用 TypeScript，您可以直接导入 `RollupOptions` 类型：
 
 ```typescript
 import type { RollupOptions } from 'rollup'
 
 const config: RollupOptions = {
-  /* your config */
+  /* ... */
 }
 export default config
 ```
 
-## Differences to the JavaScript API
+## 和 JavaScript API 的不同之处
 
-While config files provide an easy way to configure Rollup, they also limit how Rollup can be invoked and configured. Especially if you are bundling Rollup into another build tool or want to integrate it into an advanced build process, it may be better to directly invoke Rollup programmatically from your scripts.
+虽然配置文件提供了配置 Rollup 的简单方法，但它们也限制了如何调用和配置 Rollup。特别是如果您将 Rollup 绑定到另一个构建工具中，或者希望将其集成到高级构建过程中，那么最好直接使用编程的方式调用 Rollup。
 
-If you want to switch from config files to using the [JavaScript API](#javascript-api) at some point, there are some important differences to be aware of:
+如果您想在某个时候从配置文件切换到使用 [JavaScript API](/docs/javascript-api)，需要注意一些重要的区别：
 
-- When using the JavaScript API, the configuration passed to `rollup.rollup` must be an object and cannot be wrapped in a Promise or a function.
-- You can no longer use an array of configurations. Instead, you should run `rollup.rollup` once for each set of `inputOptions`.
-- The `output` option will be ignored. Instead, you should run `bundle.generate(outputOptions)` or `bundle.write(outputOptions)` once for each set of `outputOptions`.
+- 在使用 JavaScript API 时，必须传递是一个对象给 `rollup.rollup`，不能传递 Promise 或函数。
+- 您不能再使用配置对象数组。替代方案是，您应该对每一组 `inputOptions` 调用一次 `rollup.rollup`。
+- `output` 选项将被忽略。作为替代，您应该为每组 `outputOptions` 运行一次 `bundle.generate(outputOptions)` 或 `bundle.write(outpupOptions)`。
 
-## Loading a configuration from a Node package
+## 从 node_modules 中加载 Rollup 配置
 
-For interoperability, Rollup also supports loading configuration files from packages installed into `node_modules`:
+为了实现互操作性，Rollup 还支持从安装到 `node_modules` 中的包加载配置文件：
 
 ```
-# this will first try to load the package "rollup-config-my-special-config";
-# if that fails, it will then try to load "my-special-config"
+# 首先它会尝试加载 `rollup-config-my-special-config`
+# 如果上面的失败了，它会再尝试加载 `my-special-config`
 rollup --config node:my-special-config
 ```
 
-## 使用原生 Node ES 模块时的注意事项
+## 使用原生 Node.js ESM 时的注意事项
 
-Especially when upgrading from an older Rollup version, there are some things you need to be aware of when using a native ES module for your configuration file.
+尤其是从旧的 Rollup 版本升级时，在配置文件中使用原生 ESM 时，需要注意一些事项。
 
-### Getting the current directory
+### 获取当前目录
 
-With CommonJS files, people often use `__dirname` to access the current directory and resolve relative paths to absolute paths. This is not supported for native ES modules. Instead, we recommend the following approach e.g. to generate an absolute id for an external module:
+使用 CommonJS，人们通常使用 `__dirname` 来访问当前目录并将相对路径解析为绝对路径。而原生 ESM 不支持此操作。相反，我们建议使用以下方法，例如为外部模块生成绝对 id：
 
 ```js
 // rollup.config.js
@@ -285,27 +285,27 @@ import { fileURLToPath } from 'node:url'
 
 export default {
   ...,
-  // generates an absolute path for <currentdir>/src/some-external-file.js
+  // 为 <currentdir>/src/some-external-file.js 生成绝对路径
   external: [fileURLToPath(new URL('src/some-external-file.js', import.meta.url))]
 };
 ```
 
-### Importing package.json
+### 导入 package.json
 
-It can be useful to import your package file to e.g. mark your dependencies as "external" automatically. Depending on your Node version, there are different ways of doing that:
+导入 `package.json` 通常对编写配置文件很有帮助，例如自动将依赖项标记为 `external`。根据您的 Node.js 版本，有不同的方法：
 
-- For Node 17.5+, you can use an import assertion
+- 对于 Node.js 17.5+，可以使用导入断言：
 
   ```js
   import pkg from './package.json' assert { type: 'json' }
 
   export default {
-    // Mark package dependencies as "external". Rest of configuration omitted.
+    // 将依赖设置为 external
     external: Object.keys(pkg.dependencies)
   }
   ```
 
-- For older Node versions, you can use `createRequire`
+- 老版本可以使用 `createRequire`：
 
   ```js
   import { createRequire } from 'node:module'
@@ -315,22 +315,22 @@ It can be useful to import your package file to e.g. mark your dependencies as "
   // ...
   ```
 
-- Or just directly read and parse the file from disk
+- 或者直接从硬盘上读取
 
   ```js
   // rollup.config.mjs
   import { readFileSync } from 'node:fs'
 
-  // Use import.meta.url to make the path relative to the current source file instead of process.cwd()
-  // For more info: https://nodejs.org/docs/latest-v16.x/api/esm.html#importmetaurl
+  // 使用 import.meta.url 代替 process.cwd() 来确保路径是相对于当前源文件的
+  // 深入了解 import.meta.url: https://nodejs.org/docs/latest-v16.x/api/esm.html#importmetaurl
   const packageJson = JSON.parse(readFileSync(new URL('./package.json', import.meta.url)))
 
   // ...
   ```
 
-## Command line flags
+## 命令行参数
 
-Many options have command line equivalents. In those cases, any arguments passed here will override the config file, if you're using one. This is a list of all supported options:
+许多选项具有命令行等效项。在这些情况下，如果您使用的是配置文件，那么这里传递的任何参数都将覆盖该配置文件。这是所有支持选项的列表：
 
 ```text
 -c, --config <filename>     Use this config file (if argument is used but value
@@ -415,43 +415,43 @@ Many options have command line equivalents. In those cases, any arguments passed
 --validate                  Validate output
 ```
 
-The flags listed below are only available via the command line interface. All other flags correspond to and override their config file equivalents, see the [big list of options](#big-list-of-options) for details.
+下面列出的选项只能通过命令行界面使用。想了解所有其他对应选项，请查看 [选项大列表](/docs/big-list-of-options)。
 
 ### `-h`/`--help`
 
-Print the help document.
+打印帮助文档。
 
 ### `-p <plugin>`, `--plugin <plugin>`
 
-Use the specified plugin. There are several ways to specify plugins here:
+使用指定的插件。可以使用下列的方法指定插件：
 
-- Via a relative path:
+- 通过相对路径：
 
   ```
   rollup -i input.js -f es -p ./my-plugin.js
   ```
 
-  The file should export a function returning a plugin object.
+  `my-plugin.js` 应该导出一个返回插件对象的函数。
 
-- Via the name of a plugin that is installed in a local or global `node_modules` folder:
+- 通过插件名导入通过 npm 安装的 Rollup 插件包：
 
   ```
   rollup -i input.js -f es -p @rollup/plugin-node-resolve
   ```
 
-  If the plugin name does not start with `rollup-plugin-` or `@rollup/plugin-`, Rollup will automatically try adding these prefixes:
+  如果插件包名称不是以 `rollup-plugin-` 或 `@rollup/plugin-` 开头，Rollup 会自动尝试添加它们：
 
   ```
   rollup -i input.js -f es -p node-resolve
   ```
 
-- Via an inline implementation:
+- 通过一个行内实现：
 
   ```
   rollup -i input.js -f es -p '{transform: (c, i) => `/* ${JSON.stringify(i)} */\n${c}`}'
   ```
 
-If you want to load more than one plugin, you can repeat the option or supply a comma-separated list of names:
+如果您想加载多个插件，可以重复使用该选项或添加逗号将插件隔开：
 
 ```
 rollup -i input.js -f es -p node-resolve -p commonjs,json
