@@ -1,104 +1,104 @@
-# ES Module Syntax
+# ESM 语法
 
-The following is intended as a lightweight reference for the module behaviors defined in the [ES2015 specification](https://www.ecma-international.org/ecma-262/6.0/), since a proper understanding of the import and export statements are essential to the successful use of Rollup.
+以下内容旨在作为 [ES2015 规范](https://www.ecma-international.org/ecma-262/6.0/) 中定义的模块行为的轻量级参考，因为正确理解导入和导出语句对于正确使用 Rollup 来说至关重要。
 
-## Importing
+## 导入
 
-Imported values cannot be reassigned, though imported objects and arrays _can_ be mutated (and the exporting module, and any other importers, will be affected by the mutation). In that way, they behave similarly to `const` declarations.
+导入的值不能重新赋值，尽管导入的对象和数组*可以*是可变的（导出模块和任何其他导入程序都会受到其可变性的影响）。它们的行为类似于 `const` 声明。
 
-### Named Imports
+### 命名导入
 
-Import a specific item from a source module, with its original name.
+从源模块导入一个指定项，保留其原本的名称：
 
 ```js
 import { something } from './module.js'
 ```
 
-Import a specific item from a source module, with a custom name assigned upon import.
+从源模块导入一个指定项，使用自定义的名称：
 
 ```js
 import { something as somethingElse } from './module.js'
 ```
 
-### Namespace Imports
+### 命名空间导入
 
-Import everything from the source module as an object which exposes all the source module's named exports as properties and methods.
+将源模块中的所有内容作为对象导入，该对象将源模块的所有命名导出作为属性和方法公开：
 
 ```js
 import * as module from './module.js'
 ```
 
-The `something` example from above would then be attached to the imported object as a property, e.g. `module.something`. If present, the default export can be accessed via `module.default`.
+然后，上面的 `something` 示例将作为属性附加到导入的对象，例如 `module.sothing`。如果存在，可以通过 `module.default` 访问默认导出。
 
-### Default Import
+### 默认导入
 
-Import the **default export** of the source module.
+从源模块导入**默认导出**：
 
 ```js
 import something from './module.js'
 ```
 
-### Empty Import
+### 空导入
 
-Load the module code, but don't make any new objects available.
+加载模块代码，但不导入任何值：
 
 ```js
 import './module.js'
 ```
 
-This is useful for polyfills, or when the primary purpose of the imported code is to muck about with prototypes.
+这对于 polyfill 很有用，或者当导入代码的主要目的是修改原型链时。
 
-### Dynamic Import
+### 动态导入
 
-Import modules using the [dynamic import API](https://github.com/tc39/proposal-dynamic-import#import).
+使用 [动态导入 API](https://github.com/tc39/proposal-dynamic-import#import) 引入模块：
 
 ```js
 import('./modules.js').then(({ default: DefaultExport, NamedExport }) => {
-  // do something with modules.
+  // ...
 })
 ```
 
-This is useful for code-splitting applications and using modules on-the-fly.
+这对于代码拆分和动态使用模块非常有用。
 
-## Exporting
+## 导出
 
-### Named exports
+### 命名导出
 
-Export a value that has been previously declared:
+导出已定义的值：
 
 ```js
 const something = true
 export { something }
 ```
 
-Rename on export:
+导出时重命名：
 
 ```js
 export { something as somethingElse }
 ```
 
-Export a value immediately upon declaration:
+在定义时导出值：
 
 ```js
-// this works with `var`, `let`, `const`, `class`, and `function`
+// 可以在 `var`, `let`, `const`, `class` 和 `function` 前使用 export 关键字
 export const something = true
 ```
 
-### Default Export
+### 默认导出
 
-Export a single value as the source module's default export:
+导出一个值作为源模块的默认导出：
 
 ```js
 export default something
 ```
 
-This practice is only recommended if your source module only has one export.
+仅当源模块只有一个导出时，才建议使用此做法。
 
-It is bad practice to mix default and named exports in the same module, though it is allowed by the specification.
+尽管规范允许在同一模块中同时存在默认导出和命名导出，但这是一种不好的做法。
 
-## How bindings work
+## 绑定是怎样工作的
 
-ES modules export _live bindings_, not values, so values can be changed after they are initially imported as per [this demo](https://rollupjs.org/repl/?shareable=JTdCJTIybW9kdWxlcyUyMiUzQSU1QiU3QiUyMm5hbWUlMjIlM0ElMjJtYWluLmpzJTIyJTJDJTIyY29kZSUyMiUzQSUyMmltcG9ydCUyMCU3QiUyMGNvdW50JTJDJTIwaW5jcmVtZW50JTIwJTdEJTIwZnJvbSUyMCcuJTJGaW5jcmVtZW50ZXIuanMnJTNCJTVDbiU1Q25jb25zb2xlLmxvZyhjb3VudCklM0IlNUNuaW5jcmVtZW50KCklM0IlNUNuY29uc29sZS5sb2coY291bnQpJTNCJTIyJTdEJTJDJTdCJTIybmFtZSUyMiUzQSUyMmluY3JlbWVudGVyLmpzJTIyJTJDJTIyY29kZSUyMiUzQSUyMmV4cG9ydCUyMGxldCUyMGNvdW50JTIwJTNEJTIwMCUzQiU1Q24lNUNuZXhwb3J0JTIwZnVuY3Rpb24lMjBpbmNyZW1lbnQoKSUyMCU3QiU1Q24lNUN0Y291bnQlMjAlMkIlM0QlMjAxJTNCJTVDbiU3RCUyMiU3RCU1RCUyQyUyMm9wdGlvbnMlMjIlM0ElN0IlMjJmb3JtYXQlMjIlM0ElMjJjanMlMjIlMkMlMjJnbG9iYWxzJTIyJTNBJTdCJTdEJTJDJTIybW9kdWxlSWQlMjIlM0ElMjIlMjIlMkMlMjJuYW1lJTIyJTNBJTIybXlCdW5kbGUlMjIlN0QlMkMlMjJleGFtcGxlJTIyJTNBbnVsbCU3RA==):
+ESM 导出的不是值，而是*值的绑定（或者说引用，本质上每个模块都是一个闭包）*，所以可以在导入后对它们进行修改，请查看这个[例子](https://rollupjs.org/repl/?shareable=JTdCJTIybW9kdWxlcyUyMiUzQSU1QiU3QiUyMm5hbWUlMjIlM0ElMjJtYWluLmpzJTIyJTJDJTIyY29kZSUyMiUzQSUyMmltcG9ydCUyMCU3QiUyMGNvdW50JTJDJTIwaW5jcmVtZW50JTIwJTdEJTIwZnJvbSUyMCcuJTJGaW5jcmVtZW50ZXIuanMnJTNCJTVDbiU1Q25jb25zb2xlLmxvZyhjb3VudCklM0IlNUNuaW5jcmVtZW50KCklM0IlNUNuY29uc29sZS5sb2coY291bnQpJTNCJTIyJTdEJTJDJTdCJTIybmFtZSUyMiUzQSUyMmluY3JlbWVudGVyLmpzJTIyJTJDJTIyY29kZSUyMiUzQSUyMmV4cG9ydCUyMGxldCUyMGNvdW50JTIwJTNEJTIwMCUzQiU1Q24lNUNuZXhwb3J0JTIwZnVuY3Rpb24lMjBpbmNyZW1lbnQoKSUyMCU3QiU1Q24lNUN0Y291bnQlMjAlMkIlM0QlMjAxJTNCJTVDbiU3RCUyMiU3RCU1RCUyQyUyMm9wdGlvbnMlMjIlM0ElN0IlMjJmb3JtYXQlMjIlM0ElMjJjanMlMjIlMkMlMjJnbG9iYWxzJTIyJTNBJTdCJTdEJTJDJTIybW9kdWxlSWQlMjIlM0ElMjIlMjIlMkMlMjJuYW1lJTIyJTNBJTIybXlCdW5kbGUlMjIlN0QlMkMlMjJleGFtcGxlJTIyJTNBbnVsbCU3RA==)：
 
 ```js
 // incrementer.js
@@ -117,5 +117,5 @@ console.log(count) // 0
 increment()
 console.log(count) // 1
 
-count += 1 // Error — only incrementer.js can change this
+count += 1 // 错误 — 只有 incrementer.js 可以改变它
 ```
