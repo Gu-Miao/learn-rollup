@@ -4,6 +4,7 @@ export default {
   cleanUrls: 'with-subfolders',
   ignoreDeadLinks: true,
   lastUpdated: true,
+  head: [['link', { rel: 'shortcut icon', href: '/logo.svg', type: 'image/svg+xml' }]],
   themeConfig: {
     siteTitle: 'Rollup',
     logo: '/logo.svg',
@@ -13,7 +14,7 @@ export default {
       { text: 'Github', link: 'https://github.com/Gu-Miao/learn-rollup' },
       { text: '英文官网', link: 'https://rollupjs.org/' }
     ],
-    outline: 2,
+    outline: [2, 3],
     outlineTitle: ' ',
     sidebar: [
       {
