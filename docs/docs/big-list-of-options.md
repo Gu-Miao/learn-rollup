@@ -104,13 +104,13 @@ export default {
       path.relative('src', file.slice(0, file.length - path.extname(file).length)),
       // This expands the relative paths to absolute paths, so e.g.
       // src/nested/foo becomes /project/src/nested/foo.js
-      fileURLToPath(new URL(file, import.meta.url)),
+      fileURLToPath(new URL(file, import.meta.url))
     ])
   ),
   output: {
     format: 'es',
-    dir: 'dist',
-  },
+    dir: 'dist'
+  }
 }
 ```
 
@@ -273,14 +273,14 @@ export default {
   output: [
     {
       file: 'bundle.js',
-      format: 'es',
+      format: 'es'
     },
     {
       file: 'bundle.min.js',
       format: 'es',
-      plugins: [terser()],
-    },
-  ],
+      plugins: [terser()]
+    }
+  ]
 }
 ```
 
@@ -302,8 +302,8 @@ export default (async () => ({
   plugins: [resolve(), commonjs(), isProduction && (await import('rollup-plugin-terser')).terser()],
   output: {
     file: 'bundle.js',
-    format: 'cjs',
-  },
+    format: 'cjs'
+  }
 }))()
 ```
 
@@ -323,7 +323,7 @@ let cache
 
 async function buildWithCache() {
   const bundle = await rollup.rollup({
-    cache, // is ignored if falsy
+    cache // is ignored if falsy
     // ... other input options
   })
   cache = bundle.cache // store the cache object of the previous build
@@ -493,7 +493,7 @@ function _interopNamespaceDefault(e) {
                 enumerable: true,
                 get: function () {
                   return e[k]
-                },
+                }
               }
         )
       }
@@ -566,7 +566,7 @@ Object.keys(external).forEach(function (k) {
       enumerable: true,
       get: function () {
         return external[k]
-      },
+      }
     })
 })
 
@@ -577,7 +577,7 @@ for (const k in external) {
   if (k !== 'default' && !exports.hasOwnProperty(k))
     Object.defineProperty(exports, k, {
       enumerable: true,
-      get: () => external[k],
+      get: () => external[k]
     })
 }
 ```
@@ -586,7 +586,7 @@ for (const k in external) {
 
 Allows the use of shorthand notation in objects when the property name matches the value.
 
-```javascript
+```js
 // input
 const foo = 1
 export { foo, foo as bar }
@@ -598,7 +598,7 @@ System.register('bundle', [], function (exports) {
     execute: function () {
       const foo = 1
       exports({ foo: foo, bar: foo })
-    },
+    }
   }
 })
 
@@ -609,7 +609,7 @@ System.register('bundle', [], function (exports) {
     execute: function () {
       const foo = 1
       exports({ foo, bar: foo })
-    },
+    }
   }
 })
 ```
@@ -624,10 +624,10 @@ export default {
   output: {
     generatedCode: {
       preset: 'es2015',
-      arrowFunctions: false,
-    },
+      arrowFunctions: false
+    }
     // ...
-  },
+  }
 }
 ```
 
@@ -635,7 +635,7 @@ export default {
 
 Determine whether reserved words like "default" can be used as prop names without using quotes. This will make the syntax of the generated code ES3 compliant. Note however that for full ES3 compliance, you may also need to polyfill some builtin functions like `Object.keys` or `Array.prototype.forEach`.
 
-```javascript
+```js
 // input
 const foo = null
 export { foo as void }
@@ -655,7 +655,7 @@ exports.void = foo
 
 Whether to allow the use of `Symbol` in auto-generated code snippets. Currently, this only controls if namespaces will have the `Symbol.toStringTag` property set to the correct value of `Module`, which means that for a namespace, `String(namespace)` logs `[object Module]`. This again is used for feature detection in certain libraries and frameworks.
 
-```javascript
+```js
 // input
 export const foo = 42
 
@@ -720,7 +720,7 @@ Keep in mind that for Rollup, `import * as ext_namespace from 'external'; consol
                   enumerable: true,
                   get: function () {
                     return e[k]
-                  },
+                  }
                 }
           )
         }
@@ -774,7 +774,7 @@ Keep in mind that for Rollup, `import * as ext_namespace from 'external'; consol
                   enumerable: true,
                   get: function () {
                     return e[k]
-                  },
+                  }
                 }
           )
         }
@@ -832,7 +832,7 @@ Keep in mind that for Rollup, `import * as ext_namespace from 'external'; consol
                   enumerable: true,
                   get: function () {
                     return e[k]
-                  },
+                  }
                 }
           )
         }
@@ -913,8 +913,8 @@ Keep in mind that for Rollup, `import * as ext_namespace from 'external'; consol
           return 'default'
         }
         return 'defaultOnly'
-      },
-    },
+      }
+    }
   }
   ```
 
@@ -957,7 +957,7 @@ will put all lodash modules into a manual chunk even if you are only using impor
 
 When using the function form, each resolved module id will be passed to the function. If a string is returned, the module and all its dependency will be added to the manual chunk with the given name. For instance this will create a `vendor` chunk containing all dependencies inside `node_modules`:
 
-```javascript
+```js
 manualChunks(id) {
   if (id.includes('node_modules')) {
     return 'vendor';
@@ -1100,9 +1100,9 @@ export default {
     file: 'bundle.js',
     format: 'amd',
     paths: {
-      d3: 'https://d3js.org/d3.v4.min',
-    },
-  },
+      d3: 'https://d3js.org/d3.v4.min'
+    }
+  }
 }
 
 // bundle.js
@@ -1169,7 +1169,7 @@ A directory path to input modules that should be stripped away from [`output.dir
 
 For example, given the following configuration:
 
-```javascript
+```js
 export default {
   input: ['src/module.js', `src/another/module.js`],
   output: [
@@ -1177,9 +1177,9 @@ export default {
       format: 'es',
       dir: 'dist',
       preserveModules: true,
-      preserveModulesRoot: 'src',
-    },
-  ],
+      preserveModulesRoot: 'src'
+    }
+  ]
 }
 ```
 
@@ -1231,9 +1231,9 @@ export default {
         return path.resolve(path.dirname(sourcemapPath), relativeSourcePath)
       },
       format: 'es',
-      sourcemap: true,
-    },
-  ],
+      sourcemap: true
+    }
+  ]
 }
 ```
 
@@ -1347,12 +1347,12 @@ Type: `AcornPluginFunction | AcornPluginFunction[]`
 
 A single plugin or an array of plugins to be injected into Acorn. For instance to use JSX syntax, you can specify
 
-```javascript
+```js
 import jsx from 'acorn-jsx'
 
 export default {
   // … other options …
-  acornInjectPlugins: [jsx()],
+  acornInjectPlugins: [jsx()]
 }
 ```
 
@@ -1554,7 +1554,7 @@ Object.defineProperty(exports, 'x', {
   enumerable: true,
   get: function () {
     return external.x
-  },
+  }
 })
 
 // CJS output with externalLiveBindings: false
@@ -1665,7 +1665,7 @@ If you discover a bug caused by the tree-shaking algorithm, please file an issue
 
 If `false`, ignore hints from pure annotations, i.e. comments containing `@__PURE__` or `#__PURE__`, when determining side effects of function calls and constructor invocations. These annotations need to immediately precede the call invocation to take effect. The following code will be completely removed unless this option is set to `false`, in which case it will remain unchanged.
 
-```javascript
+```js
 /*@__PURE__*/ console.log('side-effect')
 
 class Impure {
@@ -1708,28 +1708,28 @@ logIfEnabled() // needs to be retained as it displays a log
 
 If `false`, assume modules and external dependencies from which nothing is imported do not have other side effects like mutating global variables or logging without checking. For external dependencies, this will suppress empty imports:
 
-```javascript
+```js
 // input file
 import { unused } from 'external-a'
 import 'external-b'
 console.log(42)
 ```
 
-```javascript
+```js
 // output with treeshake.moduleSideEffects === true
 import 'external-a'
 import 'external-b'
 console.log(42)
 ```
 
-```javascript
+```js
 // output with treeshake.moduleSideEffects === false
 console.log(42)
 ```
 
 For non-external modules, `false` will not include any statements from a module unless at least one import from this module is included:
 
-```javascript
+```js
 // input file a.js
 import { unused } from './b.js'
 console.log(42)
@@ -1739,14 +1739,14 @@ console.log('side-effect')
 const ignored = 'will still be removed'
 ```
 
-```javascript
+```js
 // output with treeshake.moduleSideEffects === true
 console.log('side-effect')
 
 console.log(42)
 ```
 
-```javascript
+```js
 // output with treeshake.moduleSideEffects === false
 console.log(42)
 ```
@@ -1755,7 +1755,7 @@ You can also supply a list of modules with side effects or a function to determi
 
 If a module that has this flag set to `false` reexports a variable from another module and this variable is used, the question if the reexporting module is scanned for side effects depends on how the variable is reexported:
 
-```javascript
+```js
 // input file a.js
 import { foo } from './b.js'
 console.log(foo)
@@ -1776,7 +1776,7 @@ export { foo }
 export const foo = 42
 ```
 
-```javascript
+```js
 // output with treeshake.moduleSideEffects === false
 const foo = 42
 
@@ -1796,8 +1796,8 @@ Allows choosing one of the presets listed above while overriding some options.
 export default {
   treeshake: {
     preset: 'smallest',
-    propertyReadSideEffects: true,
-  },
+    propertyReadSideEffects: true
+  }
   // ...
 }
 ```
@@ -1810,13 +1810,13 @@ If `false`, assume reading a property of an object never has side effects. Depen
 
 If `'always'`, assume all member property accesses, including destructuring, have side effects. This setting is recommended for code relying on getters with side effects. It typically results in larger bundle size, but smaller than disabling `treeshake` altogether.
 
-```javascript
+```js
 // Will be removed if treeshake.propertyReadSideEffects === false
 const foo = {
   get bar() {
     console.log('effect')
     return 'bar'
-  },
+  }
 }
 const result = foo.bar
 const illegalAccess = foo.quux.tooDeep
@@ -1918,13 +1918,13 @@ Specify options for watch mode or prevent this configuration from being watched.
 export default [
   {
     input: 'main.js',
-    output: { file: 'bundle.cjs.js', format: 'cjs' },
+    output: { file: 'bundle.cjs.js', format: 'cjs' }
   },
   {
     input: 'main.js',
     watch: false,
-    output: { file: 'bundle.es.js', format: 'es' },
-  },
+    output: { file: 'bundle.es.js', format: 'es' }
+  }
 ]
 ```
 
@@ -2022,7 +2022,7 @@ _Use [`output.generatedCode.symbols`](#outputgeneratedcode) instead._<br> Type: 
 
 Whether to add spec compliant `.toString()` tags to namespace objects. If this option is set,
 
-```javascript
+```js
 import * as namespace from './file.js'
 console.log(String(namespace))
 ```

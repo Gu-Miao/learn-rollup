@@ -6,7 +6,7 @@ Rollup 通常在命令行中被使用。您可以提供可选的配置文件来�
 
 汇总配置文件是可选的，但它们功能强大且方便，因此**推荐使用配置文件**。配置文件使用 ESM 格式，要求导出一个默认的配置对象：
 
-```javascript
+```js
 export default {
   input: 'src/main.js',
   output: {
@@ -30,7 +30,7 @@ rollup --config rollup.config.ts --configPlugin typescript
 
 配置文件支持下面列出的选项。有关每个选项的详细信息，请参阅 [大选项列表](/docs/big-list-of-options)：
 
-```javascript
+```js
 // rollup.config.js
 
 // 可以是一个数组（对于多个输入场景）
@@ -122,7 +122,7 @@ export default {
 
 您可以从配置文件中导出一个**数组**，以一次从多个不相关的输入构建捆绑包，即使在监视模式下也是如此。要使用相同的输入构建不同的捆绑包，您需要为每个输入提供一组输出选项：
 
-```javascript
+```js
 // rollup.config.js（构建多个输出产物）
 
 export default [
@@ -151,7 +151,7 @@ export default [
 
 如果你想异步地创建你的配置，Rollup 还可以处理一个解析为对象或数组的 `Promise`：
 
-```javascript
+```js
 // rollup.config.js
 import fetch from 'node-fetch'
 export default fetch('/some-remote-service-or-file-which-returns-actual-config')
@@ -159,7 +159,7 @@ export default fetch('/some-remote-service-or-file-which-returns-actual-config')
 
 同样，您也可以这样做：
 
-```javascript
+```js
 // rollup.config.js（Promise 被解析为数组）
 export default Promise.all([fetch('get-config-1'), fetch('get-config-2')])
 ```
@@ -177,7 +177,7 @@ rollup --config
 
 您还可以导出一个默认的函数，此函数将接收当前的命令行选项作为参数，返回上述中的配置对象。通过这种方式，您可以动态调整配置。如果以 `config` 作为前缀，您甚至可以自定义命令行选项：
 
-```javascript
+```js
 // rollup.config.js
 import defaultConfig from './rollup.default.config.js'
 import debugConfig from './rollup.debug.config.js'
@@ -194,7 +194,7 @@ export default commandLineArgs => {
 
 默认情况下，命令行参数将始终覆盖从配置文件导出的相应值。如果要更改此行为，可以从 `commandLineArgs` 对象中删除命令行参数，使 Rollup 忽略命令行参数：
 
-```javascript
+```js
 // rollup.config.js
 export default commandLineArgs => {
   const inputBase = commandLineArgs.input || 'main.js';
@@ -212,7 +212,7 @@ export default commandLineArgs => {
 
 Rollup 提供了 TypeScript 类型支持，您可以使用 JSDoc 帮助 IDE 识别您的配置对象类型：
 
-```javascript
+```js
 // rollup.config.js
 /**
  * @type {import('rollup').RollupOptions}
@@ -225,7 +225,7 @@ export default config
 
 或者，您可以使用 `defineConfig` 辅助函数，它会提供相应的类型支持并且不需要 JSDoc 注释：
 
-```javascript
+```js
 // rollup.config.js
 import { defineConfig } from 'rollup'
 
@@ -242,7 +242,7 @@ export default defineConfig({
 
 您还可以通过 [`--configPlugin`](#configplugin-plugin) 选项直接使用 TypeScript 编写配置文件。使用 TypeScript，您可以直接导入 `RollupOptions` 类型：
 
-```typescript
+```ts
 import type { RollupOptions } from 'rollup'
 
 const config: RollupOptions = {

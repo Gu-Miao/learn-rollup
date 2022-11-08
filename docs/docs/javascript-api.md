@@ -12,7 +12,7 @@ Once you're finished with the `bundle` object, you should call `bundle.close()`,
 
 If an error occurs at either stage, it will return a Promise rejected with an Error, which you can identify via their `code` property. Besides `code` and `message`, many errors have additional properties you can use for custom reporting, see [`utils/error.ts`](https://github.com/rollup/rollup/blob/master/src/utils/error.ts) for a complete list of errors and warnings together with their codes and properties.
 
-```javascript
+```js
 import { rollup } from 'rollup';
 
 // see below for details on these options
@@ -126,7 +126,7 @@ const inputOptions = {
 
   // experimental
   experimentalCacheExpiry,
-  perf,
+  perf
 }
 ```
 
@@ -180,7 +180,7 @@ const outputOptions = {
   preferConst,
   sanitizeFileName,
   strict,
-  systemNullSetters,
+  systemNullSetters
 }
 ```
 
@@ -256,8 +256,8 @@ const watchOptions = {
     clearScreen,
     skipWrite,
     exclude,
-    include,
-  },
+    include
+  }
 }
 ```
 
