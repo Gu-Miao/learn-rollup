@@ -457,7 +457,7 @@ export default {
 rollup -i input.js -f es -p node-resolve -p commonjs,json
 ```
 
-By default, plugin functions will be called with no argument to create the plugin. You can however pass a custom argument as well:
+默认情况下，插件函数将在没有参数的情况下调用以创建插件。但是，您也可以传递自定义参数：
 
 ```
 rollup -i input.js -f es -p 'terser={output: {beautify: true, indent_level: 2}}'
@@ -465,55 +465,55 @@ rollup -i input.js -f es -p 'terser={output: {beautify: true, indent_level: 2}}'
 
 ### `--configPlugin <plugin>`
 
-Allows specifying Rollup plugins to transpile or otherwise control the parsing of your configuration file. The main benefit is that it allows you to use non-JavaScript configuration files. For instance the following will allow you to write your configuration in TypeScript, provided you have `@rollup/plugin-typescript` installed:
+允许指定 Rollup 插件来转换或以其他方式控制配置文件的解析。主要好处是它允许您使用非 JavaScript 配置文件。例如，如果您安装了 `@rollup/plugin-typeScript`, Rollup 将允许您用 TypeScript 编写配置文件：
 
 ```
 rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript
 ```
 
-Note for Typescript: make sure you have the Rollup config file in your `tsconfig.json`'s `include` paths. For example:
+注意：请确保 Rollup 配置文件被包括在 `tsconfig.json` 文件的 `include` 属性中。比如：
 
 ```
 "include": ["src/**/*", "rollup.config.ts"],
 ```
 
-This option supports the same syntax as the [`--plugin`](#-p-plugin---plugin-plugin) option i.e., you can specify the option multiple times, you can omit the `@rollup/plugin-` prefix and just write `typescript` and you can specify plugin options via `={...}`.
+此选项支持与 [`--plugin`](#p-plugin-plugin-plugin) 选项相同的语法，即，您可以多次指定该选项，您可以省略 `@rollup/plugin-` 前缀，只需编写 `typescript` ，您可以通过 `={…}` 指定插件选项。
 
-Using this option will make Rollup transpile your configuration file to an ES module first before executing it. To transpile to CommonJS instead, also pass the [`--bundleConfigAsCjs`](#--bundleconfigascjs) option.
+使用此选项将使 Rollup 在执行配置文件之前首先将其转换为 ESM。要转换为 CommonJS，还需要传递 [`--bundleConfigAsCjs`](#bundleconfigascjs) 选项。
 
 ### `--bundleConfigAsCjs`
 
-This option will force your configuration to be transpiled to CommonJS.
+此选项将强制您的配置转换为 CommonJS 格式。
 
-This allows you to use CommonJS idioms like `__dirname` or `require.resolve` in your configuration even if the configuration itself is written as an ES module.
+这允许您使用 CommonJS 惯用语法，如 `__dirname` 或 `require.resolve`，即使配置本身是使用 ESM 格式编写的。
 
 ### `-v`/`--version`
 
-Print the installed version number.
+打印 Rollup 的版本号。
 
 ### `-w`/`--watch`
 
-Rebuild the bundle when its source files change on disk.
+当磁盘上的源文件发生更改时，重新生成捆绑包。
 
-_Note: While in watch mode, the `ROLLUP_WATCH` environment variable will be set to `"true"` by Rollup's command line interface and can be checked by other processes. Plugins should instead check [`this.meta.watchMode`](#thismeta), which is independent of the command line interface._
+_注意：在监视模式下，`ROLLUP_WATCH` 环境变量将由 Rollup 的命令行界面设置为 `"true"`，并可由其他进程检查。而插件应该检查 [`this.meta.watchMode`](/docs/plugin-development#this-meta) 属性，它独立于命令行界面。_
 
 ### `--silent`
 
-Don't print warnings to the console. If your configuration file contains an `onwarn` handler, this handler will still be called. To manually prevent that, you can access the command line options in your configuration file as described at the end of [Configuration Files](#configuration-files).
+不打印警告信息到控制台。如果配置文件中包含 `onwarn` 回调函数，则将调用此函数。要手动防止这种情况，您可以访问配置文件中的命令行选项，如 [配置文件](#配置文件) 末尾所述。
 
 ### `--failAfterWarnings`
 
-Exit the build with an error if any warnings occurred, once the build is complete.
+构建过程不允许出现警告。如果出现任何警告，将立即退出并返回错误。
 
 ### `--environment <values>`
 
-Pass additional settings to the config file via `process.ENV`.
+通过 `process.ENV` 将其他环境变量传递到配置文件。
 
 ```sh
 rollup -c --environment INCLUDE_DEPS,BUILD:production
 ```
 
-will set `process.env.INCLUDE_DEPS === 'true'` and `process.env.BUILD === 'production'`. You can use this option several times. In that case, subsequently set variables will overwrite previous definitions. This enables you for instance to overwrite environment variables in `package.json` scripts:
+这将把 `process.env.INCLUDE_DEPS` 设为 `"true"` 并且把 `process.env.BUILD` 设为 `"production"`。您可以多次使用此选项。如果存在同名环境变量，后续设置的变量将覆盖先前的变量。这使您能够覆盖 `package.json` 中的环境变量：
 
 ```json
 {
@@ -523,17 +523,17 @@ will set `process.env.INCLUDE_DEPS === 'true'` and `process.env.BUILD === 'produ
 }
 ```
 
-If you call this script via:
+如果您执行这个命令：
 
 ```
 npm run build -- --environment BUILD:development
 ```
 
-then the config file will receive `process.env.INCLUDE_DEPS === 'true'` and `process.env.BUILD === 'development'`.
+配置文件中的 `process.env.BUILD` 将被改为 `"development"`。
 
 ### `--waitForBundleInput`
 
-This will not throw an error if one of the entry point files is not available. Instead, it will wait until all files are present before starting the build. This is useful, especially in watch mode, when Rollup is consuming the output of another process.
+如果其中一个入口点文件不可用，Rollup 不会引发错误。相反，Rollup 将等到所有文件都存在后再开始构建。在监视模式下，当 Rollup 正在消耗另一个进程的输出的时候，这个选项尤其有用。
 
 ### `--stdin=ext`
 
