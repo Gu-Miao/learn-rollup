@@ -537,40 +537,40 @@ npm run build -- --environment BUILD:development
 
 ### `--stdin=ext`
 
-Specify a virtual file extension when reading content from stdin. By default, Rollup will use the virtual file name `-` without an extension for content read from stdin. Some plugins, however, rely on file extensions to determine if they should process a file. See also [Reading a file from stdin](#reading-a-file-from-stdin).
+从标准输入流读取内容时指定虚拟文件扩展名。默认情况下，对于从标准输入流读取的内容，Rollup 将使用不带扩展名的虚拟文件名`-`。然而，一些插件依赖于文件扩展名来确定是否应该处理文件。另请参见 [从标准输入流读取文件](#从标准输入流读取文件)。
 
 ### `--no-stdin`
 
-Do not read files from `stdin`. Setting this flag will prevent piping content to Rollup and make sure Rollup interprets `-` and `-.[ext]` as a regular file names instead of interpreting these as the name of `stdin`. See also [Reading a file from stdin](#reading-a-file-from-stdin).
+不要从标准输入流读取文件。设置此标志将阻止把内容管道化传递给 Rollup，并确保 Rollup 将 `-` 和 `-.[ext]` 作为常规文件名解析，而不是将其解释为标准输入流的名称。另请参见 [从标准输入流读取文件](#从标准输入流读取文件)。
 
 ### `--watch.onStart <cmd>`, `--watch.onBundleStart <cmd>`, `--watch.onBundleEnd <cmd>`, `--watch.onEnd <cmd>`, `--watch.onError <cmd>`
 
-When in watch mode, run a shell command `<cmd>` for a watch event code. See also [rollup.watch](#rollupwatch).
+在监视模式下，为监视事件代码运行 shell 命令 `<cmd>`。另请参见 [rollup.watch](/docs/javascript-api#rollup-watch)。
 
 ```sh
 rollup -c --watch --watch.onEnd="node ./afterBuildScript.js"
 ```
 
-## Reading a file from stdin
+## 从标准输入流读取文件
 
-When using the command line interface, Rollup can also read content from stdin:
+使用命令行界面时，Rollup 还可以从标准输入流读取内容：
 
 ```
 echo "export const foo = 42;" | rollup --format cjs --file out.js
 ```
 
-When this file contains imports, Rollup will try to resolve them relative to the current working directory. When using a config file, Rollup will only use `stdin` as an entry point if the file name of the entry point is `-`. To read a non-entry-point file from stdin, just call it `-`, which is the file name that is used internally to reference `stdin`. I.e.
+当此文件包含导入时，Rollup 将尝试相对于当前工作目录解析它们。使用配置文件时，如果入口文件名为 `-`，Rollup 将仅使用标准输入流作为入口。要从标准输入流读取非入口点文件，只需要称它为 `-`，这是内部用来引用标准输入流的文件名，即：
 
 ```js
 import foo from '-'
 ```
 
-in any file will prompt Rollup to try to read the imported file from `stdin` and assign the default export to `foo`. You can pass the [`--no-stdin`](#--no-stdin) CLI flag to Rollup to treat `-` as a regular file name instead.
+在任何文件中都会提示 Rollup 尝试从标准输入流读取导入的文件，并将默认导出指定给 `foo`。您可以使用 [`--no-stdin`](#no-stdin) 命令行参数，以将 `-` 作为常规文件名。
 
-As some plugins rely on file extensions to process files, you can specify a file extension for stdin via `--stdin=ext` where `ext` is the desired extension. In that case, the virtual file name will be `-.ext`:
+由于某些插件依赖文件扩展名来处理文件，您可以使用 `--stdin=ext` 来指定标准输入的文件扩展名，其中 `ext` 是所需的扩展名。在这种情况下，虚拟文件将被命名为 `-.ext`：
 
 ```
 echo '{"foo": 42, "bar": "ok"}' | rollup --stdin=json -p json
 ```
 
-The JavaScript API will always treat `-` and `-.ext` as regular file names.
+JavaScript API 总是会将 `-` 和 `-.ext` 视为常规文件名。
