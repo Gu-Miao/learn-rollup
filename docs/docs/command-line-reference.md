@@ -28,7 +28,7 @@ rollup --config rollup.config.ts --configPlugin typescript
 
 使用 `--configPlugin` 选项将始终强制您的配置文件首先转译为 CommonJS。另请查看 [配置选项智能补全](#配置选项智能补全) 章节，了解更多在配置文件中使用 TypeScript 类型的方法。
 
-配置文件支持下面列出的选项。有关每个选项的详细信息，请参阅 [大选项列表](/docs/big-list-of-options)：
+配置文件支持下面列出的选项。有关每个选项的详细信息，请参阅 [选项大列表](/docs/big-list-of-options)：
 
 ```js
 // rollup.config.js
@@ -315,7 +315,7 @@ export default {
   // ...
   ```
 
-- 或者直接从硬盘上读取
+- 或者直接从磁盘上读取
 
   ```js
   // rollup.config.mjs
