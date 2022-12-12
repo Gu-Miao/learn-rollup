@@ -1,32 +1,32 @@
-# Tutorial
+# 教程
 
-## Creating Your First Bundle
+## 创建您的第一个捆绑包
 
-_Before we begin, you'll need to have [Node.js](https://nodejs.org) installed so that you can use [NPM](https://npmjs.com). You'll also need to know how to access the [command line](https://www.codecademy.com/learn/learn-the-command-line) on your machine._
+_在我们开始之前，您需要安装 [Node.js](https://nodejs.org)，以便您可以使用 [NPM](https://npmjs.com)。您还需要知道如何访问您机器上的 [命令行工具](https://www.codecademy.com/learn/learn-the-command-line)。_
 
-The easiest way to use Rollup is via the Command Line Interface (or CLI). For now, we'll install it globally (later on we'll learn how to install it locally to your project so that your build process is portable, but don't worry about that yet). Type this into the command line:
+使用 Rollup 最简单的方法是通过命令行界面。现在，我们将在全局范围内安装它（稍后我们将学习如何在你的项目中本地安装它，以便你的构建过程可以移植，但先不考虑这个问题）。在命令行中键入以下内容：
 
 ```
 npm install rollup --global
 # or `npm i rollup -g` for short
 ```
 
-You can now run the `rollup` command. Try it!
+现在您可以使用 `rollup` 命令了。试试看！
 
 ```
 rollup
 ```
 
-Because no arguments were passed, Rollup prints usage instructions. This is the same as running `rollup --help`, or `rollup -h`.
+由于没有传递参数，Rollup 会打印出使用说明。这与运行 `rollup --help`，或 `rollup -h` 是一样的。
 
-Let's create a simple project:
+让我们创建一个简单的项目：
 
 ```
 mkdir -p my-rollup-project/src
 cd my-rollup-project
 ```
 
-First, we need an _entry point_. Paste this into a new file called `src/main.js`:
+首先，我们需要一个入口文件。将下面代码粘贴到一个名为 `src/main.js` 的新文件中：
 
 ```js
 // src/main.js
@@ -36,20 +36,20 @@ export default function () {
 }
 ```
 
-Then, let's create the `foo.js` module that our entry point imports:
+然后，让我们创建入口文件中所导入的 `foo.js` 模块：
 
 ```js
 // src/foo.js
 export default 'hello world!'
 ```
 
-Now we're ready to create a bundle:
+现在我们准备创建一个捆绑包：
 
 ```
 rollup src/main.js -f cjs
 ```
 
-The `-f` option (short for `--format`) specifies what kind of bundle we're creating — in this case, CommonJS (which will run in Node.js). Because we didn't specify an output file, it will be printed straight to `stdout`:
+`-f` 选项（`--format` 的缩写）指定了我们要创建的是哪种捆绑包，在本例中是 CommonJS 格式（在 Node.js 中运行）。因为我们没有指定输出文件，它直接被打印到了标准输出流：
 
 ```js
 'use strict'
@@ -63,15 +63,15 @@ const main = function () {
 module.exports = main
 ```
 
-You can save the bundle as a file like so:
+你可以像这样把捆绑的文件保存起来：
 
 ```
 rollup src/main.js -o bundle.js -f cjs
 ```
 
-(You could also do `rollup src/main.js -f cjs > bundle.js`, but as we'll see later, this is less flexible if you're generating sourcemaps.)
+(你也可以运行 `rollup src/main.js -f cjs > bundle.js`，但正如我们稍后看到的，如果你要生成 sourcemap，这就不那么灵活了)。
 
-Try running the code:
+试着运行代码：
 
 ```
 node
@@ -80,15 +80,15 @@ node
 'hello world!'
 ```
 
-Congratulations! You've created your first bundle with Rollup.
+恭喜你！你已经用 Rollup 创建了你的第一个捆绑包。
 
-## Using Config Files
+## 使用配置文件
 
-So far, so good, but as we start adding more options it becomes a bit of a nuisance to type out the command.
+到目前为止，情况还不错，但当我们开始添加更多的选项时，打出命令就变得有点麻烦了。
 
-To save repeating ourselves, we can create a config file containing all the options we need. A config file is written in JavaScript and is more flexible than the raw CLI.
+为了避免重复，我们可以创建一个包含所有我们需要的选项的配置文件。配置文件是用 JavaScript 编写的，比原始 CLI 更灵活。
 
-Create a file in the project root called `rollup.config.js`, and add the following code:
+在项目根部创建一个名为 `rollup.config.js` 的文件，并添加以下代码：
 
 ```js
 // rollup.config.js
@@ -96,21 +96,21 @@ export default {
   input: 'src/main.js',
   output: {
     file: 'bundle.js',
-    format: 'cjs',
-  },
+    format: 'cjs'
+  }
 }
 ```
 
-(Note that you can use CJS modules and therefore `module.exports = {/* config */}`)
+(注意，你可以使用 CJS 模块，比如 `module.exports = {/* config */}`)
 
-To use the config file, we use the `--config` or `-c` flag:
+为了使用配置文件，我们需要使用 `--config` 或 `-c` 命令行参数。
 
 ```
-rm bundle.js # so we can check the command works!
+rm bundle.js # 删掉之前的产物
 rollup -c
 ```
 
-You can override any of the options in the config file with the equivalent command line options:
+你可以用相应的命令行选项来覆盖配置文件中的任何选项。
 
 ```
 rollup -c -o bundle-2.js # `-o` is equivalent to `--file` (formerly "output")
@@ -165,7 +165,7 @@ Once installed, it's common practice to add a single build script to `package.js
 
 _Note: Once installed locally, both NPM and Yarn will resolve the dependency's bin file and execute Rollup when called from a package script._
 
-## Using plugins
+## 使用插件
 
 So far, we've created a simple bundle from an entry point and a module imported via a relative path. As you build more complex bundles, you'll often need more flexibility – importing modules installed with NPM, compiling code with Babel, working with JSON files and so on.
 
@@ -214,9 +214,9 @@ export default {
   input: 'src/main.js',
   output: {
     file: 'bundle.js',
-    format: 'cjs',
+    format: 'cjs'
   },
-  plugins: [json()],
+  plugins: [json()]
 }
 ```
 
@@ -236,7 +236,7 @@ module.exports = main
 
 _Note: Only the data we actually need gets imported – `name` and `devDependencies` and other parts of `package.json` are ignored. That's **tree-shaking** in action._
 
-## Using output plugins
+## 使用输出插件
 
 Some plugins can also be applied specifically to some outputs. See [plugin hooks](#build-hooks) for the technical details of what output-specific plugins can do. In a nut-shell, those plugins can only modify code after the main analysis of Rollup has completed. Rollup will warn if an incompatible plugin is used as an output-specific plugin. One possible use-case is minification of bundles to be consumed in a browser.
 
@@ -258,16 +258,16 @@ export default {
   output: [
     {
       file: 'bundle.js',
-      format: 'cjs',
+      format: 'cjs'
     },
     {
       file: 'bundle.min.js',
       format: 'iife',
       name: 'version',
-      plugins: [terser()],
-    },
+      plugins: [terser()]
+    }
   ],
-  plugins: [json()],
+  plugins: [json()]
 }
 ```
 
@@ -283,7 +283,7 @@ var version = (function () {
 })()
 ```
 
-## Code Splitting
+## 代码拆分
 
 For code splitting, there are cases where Rollup splits code into chunks automatically, like dynamic loading or multiple entry points, and there is a way to explicitly tell Rollup which modules to split into separate chunks via the [`output.manualChunks`](#outputmanualchunks) option.
 

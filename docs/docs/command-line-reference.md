@@ -149,7 +149,7 @@ export default [
 ]
 ```
 
-如果你想异步地创建你的配置，Rollup 还可以处理一个解析为对象或数组的 `Promise`：
+如果您想异步地创建您的配置，Rollup 还可以处理一个解析为对象或数组的 `Promise`：
 
 ```js
 // rollup.config.js
@@ -170,7 +170,7 @@ export default Promise.all([fetch('get-config-1'), fetch('get-config-2')])
 # 给 Rollup 传递一个自定义配置文件路径
 rollup --config my.config.js
 
-# 如果你不传递文件名，Rollup 会尝试通过如下顺序加载配置文件：
+# 如果您不传递文件名，Rollup 会尝试通过如下顺序加载配置文件：
 # rollup.config.mjs -> rollup.config.cjs -> rollup.config.js
 rollup --config
 ```

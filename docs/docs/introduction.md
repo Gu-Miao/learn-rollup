@@ -10,7 +10,7 @@ Rollup 将小段代码编译成更大更复杂的东西，例如库或应用程�
 npm install rollup -g
 ```
 
-这会全局安装 Rollup，Rollup 命令行工具也将全局可用。你可以将他安装在单独的项目中，请查看 [局部安装 rollup](/docs/tutorial#局部安装-rollup) 这一章节。
+这会全局安装 Rollup，Rollup 命令行工具也将全局可用。您可以将他安装在单独的项目中，请查看 [局部安装 rollup](/docs/tutorial#局部安装-rollup) 这一章节。
 
 ## 快速开始
 
@@ -78,4 +78,4 @@ Rollup 可以 [通过一个插件](https://github.com/rollup/plugins/tree/master
 
 ### 发布 ESM 代码
 
-为确保您的 ESM 代码可以直接被使用 CommonJS 的工具（例如 Node.js 和 webpack）使用，您可以使用 Rollup 将产物编译为 UMD 或 CommonJS 格式，然后令 `package.json` 文件中的 `main` 属性指向该编译版本。如果你的 `package.json` 文件也有 `module` 属性，那么像 Rollup 和 [webpack 2+](https://webpack.js.org/) 等 ESM 感知工具将可以直接 [导入 ESM 版本](https://github.com/rollup/rollup/wiki/pkg.module)。
+为确保您的 ESM 代码可以直接被使用 CommonJS 的工具（例如 Node.js 和 webpack）使用，您可以使用 Rollup 将产物编译为 UMD 或 CommonJS 格式，然后令 `package.json` 文件中的 `main` 属性指向该编译版本。如果您的 `package.json` 文件也有 `module` 属性，那么像 Rollup 和 [webpack 2+](https://webpack.js.org/) 等 ESM 感知工具将可以直接 [导入 ESM 版本](https://github.com/rollup/rollup/wiki/pkg.module)。
