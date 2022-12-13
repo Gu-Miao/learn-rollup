@@ -62,7 +62,7 @@ export default ({
 
 The name of the plugin, for use in error messages and warnings.
 
-## Build Hooks
+## 构建时的钩子函数
 
 To interact with the build process, your plugin object includes "hooks". Hooks are functions which are called at various stages of the build. Hooks can affect how a build is run, provide information about a build, or modify a build once complete. There are different kinds of hooks:
 
@@ -86,8 +86,8 @@ Instead of a function, hooks can also be objects. In that case, the actual hook 
             return { id: source, external: true }
           }
           return null
-        },
-      },
+        }
+      }
     }
   }
   ```
@@ -111,8 +111,8 @@ Instead of a function, hooks can also be objects. In that case, the actual hook 
         async handler({ dir }) {
           const topLevelFiles = await readdir(resolve(dir))
           console.log(topLevelFiles)
-        },
-      },
+        }
+      }
     }
   }
   ```
@@ -275,7 +275,7 @@ function injectPolyfillPlugin() {
         return code
       }
       return null
-    },
+    }
   }
 }
 ```
@@ -295,7 +295,7 @@ function externalizeDependencyPlugin() {
         return { id: 'my-dependency-develop', external: true }
       }
       return null
-    },
+    }
   }
 }
 ```
@@ -387,7 +387,7 @@ function augmentWithDatePlugin() {
       if (chunkInfo.name === 'foo') {
         return Date.now().toString()
       }
-    },
+    }
   }
 }
 ```
@@ -507,9 +507,9 @@ function dynamicImportPolyfillPlugin() {
     renderDynamicImport() {
       return {
         left: 'dynamicImportPolyfill(',
-        right: ', import.meta.url)',
+        right: ', import.meta.url)'
       }
-    },
+    }
   }
 }
 
@@ -534,10 +534,10 @@ function retainImportExpressionPlugin() {
       if (targetModuleId === 'esm-lib') {
         return {
           left: 'import(',
-          right: ')',
+          right: ')'
         }
       }
-    },
+    }
   }
 }
 ```
@@ -579,7 +579,7 @@ function resolveToDocumentPlugin() {
     name: 'resolve-to-document',
     resolveFileUrl({ fileName }) {
       return `new URL('${fileName}', document.baseURI).href`
-    },
+    }
   }
 }
 ```
@@ -603,7 +603,7 @@ function importMetaUrlCurrentModulePlugin() {
         return `new URL('${path.relative(process.cwd(), moduleId)}', document.baseURI).href`
       }
       return null
-    },
+    }
   }
 }
 ```
@@ -680,17 +680,17 @@ function generateHtmlPlugin() {
     buildStart() {
       ref1 = this.emitFile({
         type: 'chunk',
-        id: 'src/entry1',
+        id: 'src/entry1'
       })
       ref2 = this.emitFile({
         type: 'chunk',
         id: 'src/entry2',
-        implicitlyLoadedAfterOneOf: ['src/entry1'],
+        implicitlyLoadedAfterOneOf: ['src/entry1']
       })
       ref3 = this.emitFile({
         type: 'chunk',
         id: 'src/entry3',
-        implicitlyLoadedAfterOneOf: ['src/entry2'],
+        implicitlyLoadedAfterOneOf: ['src/entry2']
       })
     },
     generateBundle() {
@@ -709,9 +709,9 @@ function generateHtmlPlugin() {
           <script src="${this.getFileName(ref2)}" type="module"></script>
           <script src="${this.getFileName(ref3)}" type="module"></script>
         </body>
-        </html>`,
+        </html>`
       })
-    },
+    }
   }
 }
 
@@ -721,8 +721,8 @@ export default {
   plugins: [generateHtmlPlugin()],
   output: {
     format: 'es',
-    dir: 'dist',
-  },
+    dir: 'dist'
+  }
 }
 ```
 
@@ -870,7 +870,7 @@ export default function addProxyPlugin() {
         return code
       }
       return null
-    },
+    }
   }
 }
 ```
@@ -941,7 +941,7 @@ export default function dynamicChunkLogsPlugin() {
         code += `export { default } from ${JSON.stringify(actualId)};`
       }
       return code
-    },
+    }
   }
 }
 ```
@@ -1037,11 +1037,11 @@ function svgResolverPlugin() {
         const referenceId = this.emitFile({
           type: 'asset',
           name: path.basename(id),
-          source: fs.readFileSync(id),
+          source: fs.readFileSync(id)
         })
         return `export default import.meta.ROLLUP_FILE_URL_${referenceId};`
       }
-    },
+    }
   }
 }
 ```
@@ -1069,7 +1069,7 @@ function registerPaintWorkletPlugin() {
       if (id.startsWith(REGISTER_WORKLET)) {
         return `CSS.paintWorklet.addModule(import.meta.ROLLUP_FILE_URL_${this.emitFile({
           type: 'chunk',
-          id: id.slice(REGISTER_WORKLET.length),
+          id: id.slice(REGISTER_WORKLET.length)
         })});`
       }
     },
@@ -1082,7 +1082,7 @@ function registerPaintWorkletPlugin() {
         )
       }
       return null
-    },
+    }
   }
 }
 ```
@@ -1142,9 +1142,9 @@ function transformCodePlugin(options = {}) {
       // proceed with the transformation...
       return {
         code: generatedCode,
-        map: generatedSourceMap,
+        map: generatedSourceMap
       }
-    },
+    }
   }
 }
 ```
@@ -1158,7 +1158,7 @@ If it doesn't make sense to generate a sourcemap, (e.g. [rollup-plugin-string](h
 ```js
 return {
   code: transformedCode,
-  map: { mappings: '' },
+  map: { mappings: '' }
 }
 ```
 
@@ -1167,7 +1167,7 @@ If the transformation does not move code, you can preserve existing sourcemaps b
 ```js
 return {
   code: transformedCode,
-  map: null,
+  map: null
 }
 ```
 
@@ -1183,7 +1183,7 @@ It is possible to designate a fallback export for missing exports by setting the
 export const foo = 'explicit'
 export const __synthetic = {
   foo: 'foo',
-  bar: 'bar',
+  bar: 'bar'
 }
 ```
 
@@ -1225,10 +1225,10 @@ function requestingPlugin() {
     name: 'requesting',
     async buildStart() {
       const resolution = await this.resolve('foo', undefined, {
-        custom: { resolving: { specialResolution: true } },
+        custom: { resolving: { specialResolution: true } }
       })
       console.log(resolution.id) // "special"
-    },
+    }
   }
 }
 
@@ -1240,7 +1240,7 @@ function resolvingPlugin() {
         return 'special'
       }
       return null
-    },
+    }
   }
 }
 ```
@@ -1259,7 +1259,7 @@ function annotatingPlugin() {
       if (thisModuleIsSpecial(code, id)) {
         return { meta: { annotating: { special: true } } }
       }
-    },
+    }
   }
 }
 
@@ -1272,7 +1272,7 @@ function readingPlugin() {
         id => this.getModuleInfo(id).meta.annotating?.special
       )
       // do something with this list
-    },
+    }
   }
 }
 ```
@@ -1296,7 +1296,7 @@ function plugin() {
       const meta = this.getModuleInfo('my-id').meta
       // we can also modify meta manually now
       meta.test = { some: 'data' }
-    },
+    }
   }
 }
 ```
@@ -1313,8 +1313,8 @@ function parentPlugin() {
       //...methods and properties exposed for other plugins
       doSomething(...args) {
         // do something interesting
-      },
-    },
+      }
+    }
     // ...plugin hooks
   }
 }
@@ -1337,7 +1337,7 @@ function dependentPlugin() {
       if (thereIsAReasonToDoSomething(id)) {
         parentApi.doSomething(id)
       }
-    },
+    }
   }
 }
 ```
