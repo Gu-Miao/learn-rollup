@@ -1704,6 +1704,37 @@ logBeforeDeclaration = true
 logIfEnabled() // needs to be retained as it displays a log
 ```
 
+**treeshake.manualPureFunctions**<br> Type: `string[]`<br> CLI: `--treeshake.manualPureFunctions <names>`
+
+Allows to manually define a list of function names that should always be considered "pure", i.e. they have no side effects like changing global state etc. when called. The check is performed solely by name.
+
+This can not only help with dead code removal, but can also improve JavaScript chunk generation especially when using [`experimentalMinChunkSize`](#experimentalminchunksize).
+
+Besides any functions matching that name, any properties on a pure function and any functions returned from a pure functions will also be considered pure functions, and accessing any properties is not checked for side effects.
+
+```js
+// rollup.config.js
+export default {
+  treeshake: {
+    preset: 'smallest',
+    manualPureFunctions: ['styled', 'local']
+  }
+  // ...
+}
+
+// code
+import styled from 'styled-components'
+const local = console.log
+
+local() // removed
+styled.div`
+  color: blue;
+` // removed
+styled?.div() // removed
+styled()() // removed
+styled().div() // removed
+```
+
 **treeshake.moduleSideEffects**<br> Type: `boolean | "no-external" | string[] | (id: string, external: boolean) => boolean`<br> CLI: `--treeshake.moduleSideEffects`/`--no-treeshake.moduleSideEffects`/`--treeshake.moduleSideEffects no-external`<br> Default: `true`
 
 If `false`, assume modules and external dependencies from which nothing is imported do not have other side effects like mutating global variables or logging without checking. For external dependencies, this will suppress empty imports:
@@ -1887,6 +1918,16 @@ These options reflect new features that have not yet been fully finalized. Avail
 Type: `number`<br> CLI: `--experimentalCacheExpiry <numberOfRuns>`<br> Default: `10`
 
 Determines after how many runs cached assets that are no longer used by plugins should be removed.
+
+### experimentalMinChunkSize
+
+Type: `number`<br> CLI: `--experimentalMinChunkSize <size>`<br> Default: `0`
+
+Set a minimal chunk size target in Byte for code-splitting setups. When this value is greater than `0`, Rollup will try to merge any chunk that does not have side effects when executed, i.e. any chunk that only contains function definitions etc., and is below this size limit into another chunk that is likely to be loaded under similar conditions.
+
+This will mean that the generated bundle will possibly load code that is not required yet in order to reduce the number of chunks. The condition for the merged chunks to be side effect free ensures that this does not change behaviour.
+
+Unfortunately, due to the way chunking works, chunk size is measured before any chunk rendering plugins like minifiers ran, which means you should use a high enough limit to take this into account.
 
 ### perf
 
