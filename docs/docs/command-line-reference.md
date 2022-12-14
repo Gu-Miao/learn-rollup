@@ -4,7 +4,7 @@ Rollup 通常在命令行中被使用。您可以提供可选的配置文件来�
 
 ## 配置文件
 
-汇总配置文件是可选的，但它们功能强大且方便，因此**推荐使用配置文件**。配置文件使用 ESM 格式，要求导出一个默认的配置对象：
+汇总配置文件是可选的，但它们功能强大且方便，因此**推荐使用配置文件**。配置文件使用 ES 模块格式，要求导出一个默认的配置对象：
 
 ```js
 export default {
@@ -16,7 +16,7 @@ export default {
 }
 ```
 
-通常，配置文件被命名为 `rollup.config.js` 或 `rollup.config.mjs` 并且位于项目的根目录中。除非使用 [`--configPlugin`](#configplugin-plugin) 或 [`--bundleConfigAsCjs`](#bundleconfigascjs) 选项，否则 Rollup 将直接使用 Node 导入文件。请注意，有一些 [使用原生 Node ES 模块时的注意事项](#使用原生-node-es-模块时的注意事项)，因为 Rollup 将遵守 [Node ESM 语义](https://nodejs.org/docs/latest-v14.x/api/packages.html#packages_determining_module_system)。
+通常，配置文件被命名为 `rollup.config.js` 或 `rollup.config.mjs` 并且位于项目的根目录中。除非使用 [`--configPlugin`](#configplugin-plugin) 或 [`--bundleConfigAsCjs`](#bundleconfigascjs) 选项，否则 Rollup 将直接使用 Node 导入文件。请注意，有一些 [使用原生 Node ES 模块时的注意事项](#使用原生-node-es-模块时的注意事项)，因为 Rollup 将遵守 [Node ES 模块语义](https://nodejs.org/docs/latest-v14.x/api/packages.html#packages_determining_module_system)。
 
 如果您想用 CommonJS 的方式编写配置文件，可以将文件的后缀名改为 `.cjs`。
 
@@ -271,13 +271,13 @@ export default config
 rollup --config node:my-special-config
 ```
 
-## 使用原生 Node.js ESM 时的注意事项
+## 使用原生 Node.js ES 模块时的注意事项
 
-尤其是从旧的 Rollup 版本升级时，在配置文件中使用原生 ESM 时，需要注意一些事项。
+尤其是从旧的 Rollup 版本升级时，在配置文件中使用原生 ES 模块时，需要注意一些事项。
 
 ### 获取当前目录
 
-使用 CommonJS，人们通常使用 `__dirname` 来访问当前目录并将相对路径解析为绝对路径。而原生 ESM 不支持此操作。相反，我们建议使用以下方法，例如为外部模块生成绝对 id：
+使用 CommonJS，人们通常使用 `__dirname` 来访问当前目录并将相对路径解析为绝对路径。而原生 ES 模块不支持此操作。相反，我们建议使用以下方法，例如为外部模块生成绝对 id：
 
 ```js
 // rollup.config.js
@@ -486,13 +486,13 @@ rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript
 
 此选项支持与 [`--plugin`](#p-plugin-plugin-plugin) 选项相同的语法，即，您可以多次指定该选项，您可以省略 `@rollup/plugin-` 前缀，只需编写 `typescript` ，您可以通过 `={…}` 指定插件选项。
 
-使用此选项将使 Rollup 在执行配置文件之前首先将其转换为 ESM。要转换为 CommonJS，还需要传递 [`--bundleConfigAsCjs`](#bundleconfigascjs) 选项。
+使用此选项将使 Rollup 在执行配置文件之前首先将其转换为 ES 模块。要转换为 CommonJS 模块，还需要传递 [`--bundleConfigAsCjs`](#bundleconfigascjs) 选项。
 
 ### `--bundleConfigAsCjs`
 
 此选项将强制您的配置转换为 CommonJS 格式。
 
-这允许您使用 CommonJS 惯用语法，如 `__dirname` 或 `require.resolve`，即使配置本身是使用 ESM 格式编写的。
+这允许您使用 CommonJS 惯用语法，如 `__dirname` 或 `require.resolve`，即使配置本身是使用 ES 模块格式编写的。
 
 ### `-v`/`--version`
 

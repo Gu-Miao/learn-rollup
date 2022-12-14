@@ -2,7 +2,7 @@
 
 ## 概览
 
-Rollup 将小段代码编译成更大更复杂的东西，例如库或应用程序。它使用标准的 ESM 方案，而不是以前的特殊解决方案，如 CommonJS 和 AMD。 ESM 让您可以自由无缝地组合您最喜欢的库中最有用的函数。Rollup 可以优化 ESM 代码从而在现代浏览器中获得更快的原生加载速度，或者允许用当下的 ESM 工作流输出遗留格式的代码。
+Rollup 将小段代码编译成更大更复杂的东西，例如库或应用程序。它使用标准的 ES 模块方案，而不是以前的特殊解决方案，如 CommonJS 和 AMD。 ES 模块让您可以自由无缝地组合您最喜欢的库中最有用的函数。Rollup 可以优化 ES 模块代码从而在现代浏览器中获得更快的原生加载速度，或者允许用当下的 ES 模块工作流输出遗留格式的代码。
 
 ## 安装
 
@@ -46,7 +46,7 @@ rollup main.js --file bundle.js --format umd --name "myBundle"
 
 ## 摇树优化
 
-除了启用 ESM 之外，Rollup 还会对您正在导入的代码进行静态分析，并将排除任何实际未使用的代码。这使您可以在现有工具和模块的基础上进行构建，而无需添加额外的依赖项或增加项目的大小。
+除了启用 ES 模块之外，Rollup 还会对您正在导入的代码进行静态分析，并将排除任何实际未使用的代码。这使您可以在现有工具和模块的基础上进行构建，而无需添加额外的依赖项或增加项目的大小。
 
 例如，当使用 CommonJS 时，_整个库必须被导入_。
 
@@ -58,10 +58,10 @@ const query = 'Rollup'
 utils.ajax(`https://api.example.com?search=${query}`).then(handleResponse)
 ```
 
-而使用 ESM，我们可以只引入我们所需的 `ajax` 函数，而非整个 `utils` 对象：
+而使用 ES 模块，我们可以只引入我们所需的 `ajax` 函数，而非整个 `utils` 对象：
 
 ```js
-// 通过 ESM 语法引入 ajax 函数
+// 通过 ES 模块语法引入 ajax 函数
 import { ajax } from './utils'
 const query = 'Rollup'
 // 调用 ajax 函数
@@ -76,6 +76,6 @@ ajax(`https://api.example.com?search=${query}`).then(handleResponse)
 
 Rollup 可以 [通过一个插件](https://github.com/rollup/plugins/tree/master/packages/commonjs) 引入当前已有的 CommonJS 代码。
 
-### 发布 ESM 代码
+### 发布 ES 模块代码
 
-为确保您的 ESM 代码可以直接被使用 CommonJS 的工具（例如 Node.js 和 webpack）使用，您可以使用 Rollup 将产物编译为 UMD 或 CommonJS 格式，然后令 `package.json` 文件中的 `main` 属性指向该编译版本。如果您的 `package.json` 文件也有 `module` 属性，那么像 Rollup 和 [webpack 2+](https://webpack.js.org/) 等 ESM 感知工具将可以直接 [导入 ESM 版本](https://github.com/rollup/rollup/wiki/pkg.module)。
+为确保您的 ES 模块代码可以直接被使用 CommonJS 的工具（例如 Node.js 和 webpack）使用，您可以使用 Rollup 将产物编译为 UMD 或 CommonJS 格式，然后令 `package.json` 文件中的 `main` 属性指向该编译版本。如果您的 `package.json` 文件也有 `module` 属性，那么像 Rollup 和 [webpack 2+](https://webpack.js.org/) 等 ES 模块感知工具将可以直接 [导入 ES 模块版本](https://github.com/rollup/rollup/wiki/pkg.module)。

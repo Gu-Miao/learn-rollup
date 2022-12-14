@@ -116,7 +116,7 @@ rollup -c
 rollup -c -o bundle-2.js # `-o` is equivalent to `--file` (formerly "output")
 ```
 
-_注意：Rollup 本身会处理配置文件，这就是为什么我们能够使用 ESM 语法——代码没有被 Babel 或类似的东西转译，所以你只能使用你所运行的 Node.js 版本所支持的 ES2015 特性。_
+_注意：Rollup 本身会处理配置文件，这就是为什么我们能够使用 ES 模块语法——代码没有被 Babel 或类似的东西转译，所以你只能使用你所运行的 Node.js 版本所支持的 ES2015 特性。_
 
 如果你愿意，你可以指定一个不同于默认 `rollup.config.js` 的配置文件。
 
@@ -381,9 +381,9 @@ exports.default = foo
 
 注意这两个入口点是如何导入同一个共享块的。Rollup 不会重复代码，而是创建额外的块，只加载必要的最低限度。同样，通过 `--dir` 选项将把文件写到磁盘上。
 
-你可以通过原生 ESM、AMD 或 SystemJS 为浏览器构建相同的代码。
+你可以通过原生 ES 模块、AMD 或 SystemJS 为浏览器构建相同的代码。
 
-例如，用 `-f es` 表示原生 ESM：
+例如，用 `-f es` 表示原生 ES 模块：
 
 ```
 rollup src/main.js src/main2.js -f es -d dist
@@ -419,4 +419,4 @@ npm install --save-dev systemjs
 </script>
 ```
 
-请参阅 [rollup-starter-code-splitting](https://github.com/rollup/rollup-starter-code-splitting)，了解如何在支持原生 ESM 的浏览器上设置网络应用，并在必要时回退到 SystemJS。
+请参阅 [rollup-starter-code-splitting](https://github.com/rollup/rollup-starter-code-splitting)，了解如何在支持原生 ES 模块的浏览器上设置网络应用，并在必要时回退到 SystemJS。

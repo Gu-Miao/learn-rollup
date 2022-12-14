@@ -18,7 +18,7 @@ import { rollup } from 'rollup';
 // 有关这些选项的详细信息，请参见下文
 const inputOptions = {...};
 
-// 您可以从同一输入创建多个输出来生成不同格式的捆绑包。比如 CommonJS 和 ESM。
+// 您可以从同一输入创建多个输出来生成不同格式的捆绑包。比如 CommonJS 和 ES 模块。
 const outputOptionsList = [{...}, {...}];
 
 build();
