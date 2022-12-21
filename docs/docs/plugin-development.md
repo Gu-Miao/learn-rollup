@@ -360,14 +360,13 @@ You can use [`this.getModuleInfo`](#thisgetmoduleinfo) to find out the previous 
 
 Notifies a plugin whenever rollup has detected a change to a monitored file in `--watch` mode. If a Promise is returned, Rollup will wait for the Promise to resolve before scheduling another build. This hook cannot be used by output plugins. The second argument contains additional details of the change event.
 
-## Output Generation Hooks
+## 输出生成钩子函数
 
 Output generation hooks can provide information about a generated bundle and modify a build once complete. They work the same way and have the same types as [Build Hooks](#build-hooks) but are called separately for each call to `bundle.generate(outputOptions)` or `bundle.write(outputOptions)`. Plugins that only use output generation hooks can also be passed in via the output options and therefore run only for certain outputs.
 
 The first hook of the output generation phase is [`outputOptions`](#outputoptions), the last one is either [`generateBundle`](#generatebundle) if the output was successfully generated via `bundle.generate(...)`, [`writeBundle`](#writebundle) if the output was successfully generated via `bundle.write(...)`, or [`renderError`](#rendererror) if an error occurred at any time during the output generation.
 
-<!-- html:hooks-legend.html -->
-<!-- mermaid:output-generation-hooks.mmd -->
+![输出生成钩子函数](/output_generation_hooks.png)
 
 Additionally, [`closeBundle`](#closebundle) can be called as the very last hook, but it is the responsibility of the User to manually call [`bundle.close()`](#rolluprollup) to trigger this. The CLI will always make sure this is the case.
 
